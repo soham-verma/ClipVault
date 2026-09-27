@@ -1,0 +1,35 @@
+# Build from the checked-out repository: copy this file to a temporary packaging
+# directory and set CLIPVAULT_SOURCE_DIR to the absolute ClipVault checkout path.
+pkgname=clipvault
+pkgver=2.0.0
+pkgrel=1
+pkgdesc='Local clipboard history and encrypted sharing for Mac and Linux'
+arch=('x86_64' 'aarch64')
+license=('MIT')
+depends=('webkit2gtk-4.1' 'libappindicator-gtk3' 'openssl' 'glib2' 'libxdo')
+makedepends=('rust' 'nodejs' 'npm' 'base-devel')
+options=('!lto')
+
+prepare() {
+  if [[ -z "${CLIPVAULT_SOURCE_DIR:-}" || ! -f "$CLIPVAULT_SOURCE_DIR/Cargo.toml" ]]; then
+    error 'Set CLIPVAULT_SOURCE_DIR to the absolute ClipVault repository path.'
+    return 1
+  fi
+  mkdir -p "$srcdir/clipvault"
+  tar -C "$CLIPVAULT_SOURCE_DIR" --exclude=.git --exclude=target --exclude=node_modules --exclude=dist --exclude=.cache -cf - . | tar -C "$srcdir/clipvault" -xf -
+}
+build() {
+  cd "$srcdir/clipvault"
+  npm ci
+  npm run tauri -- build --no-bundle
+  glib-compile-schemas extensions/clipvault/schemas
+}
+package() {
+  cd "$srcdir/clipvault"
+  install -Dm755 target/release/clipvault "$pkgdir/usr/bin/clipvault"
+  install -Dm644 packaging/clipvault.desktop "$pkgdir/usr/share/applications/com.soham.clipvault.desktop"
+  install -Dm644 src-tauri/icons/128x128.png "$pkgdir/usr/share/icons/hicolor/128x128/apps/clipvault.png"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/clipvault/LICENSE"
+  mkdir -p "$pkgdir/usr/lib/clipvault/gnome-extension"
+  cp -r extensions/clipvault/. "$pkgdir/usr/lib/clipvault/gnome-extension/"
+}

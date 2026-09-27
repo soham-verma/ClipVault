@@ -1,0 +1,8 @@
+{
+  "uuid": "clipvault@com.soham.clipvault",
+  "name": "ClipVault Clipboard Bridge",
+  "description": "Provides background clipboard access and a shortcut for the ClipVault desktop app. No networking or history storage occurs in this extension.",
+  "shell-version": ["46", "47", "48", "49", "50", "51"],
+  "settings-schema": "org.gnome.shell.extensions.clipvault",
+  "version": 1
+}

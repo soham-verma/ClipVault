@@ -1,0 +1,43 @@
+[package]
+name = "clipvault"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[features]
+# Compile the pure-Rust Linux adapters on a Mac development host as an extra check.
+linux-backend-check = ["dep:wl-clipboard-rs", "dep:x11rb", "dep:zbus", "dep:ashpd", "dep:url", "dep:futures-util"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+cc = "1"
+
+[dependencies]
+clipvault-core = { path = "../crates/clipvault-core" }
+anyhow = "1"
+libc = "0.2"
+base64 = "0.22"
+image = { version = "0.25", default-features = false, features = ["png"] }
+parking_lot = "0.12"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri = { version = "2", features = ["tray-icon", "protocol-asset"] }
+tauri-plugin-autostart = "2"
+tauri-plugin-global-shortcut = "2"
+tauri-plugin-single-instance = "2"
+tokio = { version = "1", features = ["rt-multi-thread", "sync", "time"] }
+wl-clipboard-rs = { version = "0.9", optional = true }
+x11rb = { version = "0.13", features = ["xfixes", "xtest"], optional = true }
+zbus = { version = "5", default-features = false, features = ["blocking-api", "tokio"], optional = true }
+ashpd = { version = "0.12", default-features = false, features = ["tokio"], optional = true }
+url = { version = "2", optional = true }
+futures-util = { version = "0.3", optional = true }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+url = "2"
+futures-util = "0.3"
+wl-clipboard-rs = "0.9"
+x11rb = { version = "0.13", features = ["xfixes", "xtest"] }
+zbus = { version = "5", default-features = false, features = ["blocking-api", "tokio"] }
+ashpd = { version = "0.12", default-features = false, features = ["tokio"] }

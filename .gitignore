@@ -4,3 +4,8 @@ build/
 *.xcodeproj
 DerivedData/
 .DS_Store
+target/
+node_modules/
+dist/
+.cache/
+src-tauri/gen/

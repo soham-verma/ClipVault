@@ -1,0 +1,14 @@
+[workspace]
+members = ["crates/clipvault-core", "src-tauri"]
+resolver = "2"
+
+[workspace.package]
+version = "2.0.0"
+edition = "2021"
+license = "MIT"
+rust-version = "1.88"
+
+[profile.release]
+opt-level = "s"
+lto = "thin"
+strip = true

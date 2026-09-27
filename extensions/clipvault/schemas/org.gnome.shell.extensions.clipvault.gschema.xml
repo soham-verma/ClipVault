@@ -1,0 +1,5 @@
+<schemalist>
+  <schema id="org.gnome.shell.extensions.clipvault" path="/org/gnome/shell/extensions/clipvault/">
+    <key name="toggle-clipvault" type="as"><default>['&lt;Super&gt;&lt;Shift&gt;v']</default><summary>Open ClipVault</summary></key>
+  </schema>
+</schemalist>

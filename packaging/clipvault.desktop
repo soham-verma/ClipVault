@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=ClipVault
+Comment=Clipboard history and local device sharing
+Exec=clipvault --show
+Icon=clipvault
+Terminal=false
+Categories=Utility;
+StartupWMClass=ClipVault
